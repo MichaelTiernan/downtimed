@@ -35,14 +35,17 @@
 prog="downtimed"
 exec="/usr/local/sbin/$prog"
 
+# Just in case the sysconfig file's not there set the options variable.
+PROGOPTS=""
+
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
 
 lockfile=/var/lock/subsys/$prog
 
 start() {
 	[ -x $exec ] || exit 5
-	echo -n $"Starting $prog: "
-	daemon $exec
+	echo -n $"Starting $prog: $PROGOPT"
+	daemon $exec $PROGOPTS
 	retval=$?
 	echo
 	[ $retval -eq 0 ] && touch $lockfile
